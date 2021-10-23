@@ -11,6 +11,7 @@
 
 
   <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 	
   <!-- Vendor CSS Files -->
@@ -63,7 +64,7 @@
   <section id="hero" class="d-flex flex-column justify-content-center align-items-center">
     <div class="hero-container" data-aos="fade-in">
       <h1>Somanshu Singh</h1>
-      <p>I'm <span class="typed" data-typed-items="Developer, Coder, Designer"></span></p>
+      <p>I'm <span class="typed" data-typed-items="Developer, Designer, Innovator"></span></p>
     </div>
   </section><!-- End Hero -->
 
@@ -223,8 +224,11 @@ organization through innovative, proactive and hard work approach.</p>
             </div>
           </div>
         </div>
-	<a href="#" class="float">
+	<a href="" target="_blank" class="float resume_download">
 		<i class="fa fa-download my-float"></i>
+	</a>
+	<a href="" target="_blank" class="float-download resume_download">
+		<label>Download Resume</label>
 	</a>
       </div>
     </section><!-- End Resume Section -->
@@ -582,6 +586,8 @@ organization through innovative, proactive and hard work approach.</p>
 	var d = new Date();
 	var n = d.getFullYear();
 	$("#myage").html(n-1998);
+	var resume_url = 'https://drive.google.com/file/d/1F0_9JFX3CwSnOjhq_dbezkAYZu0ACh2L/view?usp=sharing';
+	$(".resume_download").attr("href", resume_url)
   });
   </script>
 
