@@ -480,7 +480,7 @@ organization through innovative, proactive and hard work approach.</p>
     </section><!-- End Testimonials Section -->
 
     <!-- ======= Contact Section ======= -->
-    <section id="contact" style="display:block;" class="contact">
+    <section id="contact" style="display:none;" class="contact">
       <div class="container">
 
         <div class="section-title">
@@ -581,6 +581,7 @@ organization through innovative, proactive and hard work approach.</p>
   <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
+  document.addEventListener('contextmenu', event => event.preventDefault());
   $(document).ready(function(){
 	$("#websitename").html('<a href='+window.location.href+'>somanshu-singh</a>');
 	var d = new Date();
