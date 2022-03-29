@@ -52,9 +52,9 @@
           <li><a href="#hero" class="nav-link scrollto active"><i class="bx bx-home"></i> <span>Home</span></a></li>
           <li><a href="#about" class="nav-link scrollto"><i class="bx bx-user"></i> <span>About</span></a></li>
           <li><a href="#resume" class="nav-link scrollto"><i class="bx bx-file-blank"></i> <span>Resume</span></a></li>
-          <!--<li><a href="#portfolio" class="nav-link scrollto"><i class="bx bx-book-content"></i> <span>Portfolio</span></a></li>
-          <li><a href="#services" class="nav-link scrollto"><i class="bx bx-server"></i> <span>Services</span></a></li>-->
-          <li><a href="#contact" class="nav-link scrollto"><i class="bx bx-envelope"></i> <span>Contact</span></a></li>
+          <!--<li><a href="#portfolio" class="nav-link scrollto"><i class="bx bx-book-content"></i> <span>Portfolio</span></a></li>-->
+          <li><a href="#services" class="nav-link scrollto"><i class="bx bx-server"></i> <span>Project</span></a></li>
+          <!-- <li><a href="#contact" class="nav-link scrollto"><i class="bx bx-envelope"></i> <span>Contact</span></a></li> -->
         </ul>
       </nav><!-- .nav-menu -->
     </div>
@@ -224,12 +224,12 @@ organization through innovative, proactive and hard work approach.</p>
             </div>
           </div>
         </div>
-	<a href="" target="_blank" class="float resume_download">
+	<!-- <a href="" target="_blank" class="float resume_download">
 		<i class="fa fa-download my-float"></i>
 	</a>
 	<a href="" target="_blank" class="float-download resume_download">
 		<label>Download Resume</label>
-	</a>
+	</a> -->
       </div>
     </section><!-- End Resume Section -->
 
@@ -351,25 +351,27 @@ organization through innovative, proactive and hard work approach.</p>
     </section><!-- End Portfolio Section -->
 
     <!-- ======= Services Section ======= -->
-    <section id="services" style="display:none;" class="services">
+    <section id="services" class="services">
       <div class="container">
 
         <div class="section-title">
-          <h2>Services</h2>
-          <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+          <h2>Projects</h2>
+          <p>ME-N stack enables the developers to cater to both the server end as well as the client end aspects of a webpage or a web application.
+            A frequently used term among the ME-N Stack developers is GIT. Web development involves a lot of back and forth revisions of a single project.
+          </p>
         </div>
 
         <div class="row">
           <div class="col-lg-4 col-md-6 icon-box" data-aos="fade-up">
-            <div class="icon"><i class="bi bi-briefcase"></i></div>
-            <h4 class="title"><a href="">Lorem Ipsum</a></h4>
-            <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p>
+            <div class="icon"><i class="bi bi-upc-scan"></i></div>
+            <h4 class="title"><a class="project_url" href="">QR Code</a></h4>
+            <p class="description">The quick response, or QR, Code is a two-dimensional version of the Barcode able to convey a wide variety of information almost instantly with the scan of a mobile device.</p>
           </div>
           <div class="col-lg-4 col-md-6 icon-box" data-aos="fade-up" data-aos-delay="100">
-            <div class="icon"><i class="bi bi-card-checklist"></i></div>
-            <h4 class="title"><a href="">Dolor Sitema</a></h4>
-            <p class="description">Minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat tarad limino ata</p>
-          </div>
+            <div class="icon"><i class="bi bi-pin-map"></i></div>
+            <h4 class="title"><a class="project_url" href="">Pincode</a></h4>
+            <p class="description">Pin Codes (Zip Codes or Postal Codes) from India. This comprehensive directory contains more than 50k records and all the Pin Codes. You can fetch data using REST.</p>
+          </div><!--
           <div class="col-lg-4 col-md-6 icon-box" data-aos="fade-up" data-aos-delay="200">
             <div class="icon"><i class="bi bi-bar-chart"></i></div>
             <h4 class="title"><a href="">Sed ut perspiciatis</a></h4>
@@ -390,6 +392,7 @@ organization through innovative, proactive and hard work approach.</p>
             <h4 class="title"><a href="">Eiusmod Tempor</a></h4>
             <p class="description">Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi</p>
           </div>
+          -->
         </div>
 
       </div>
@@ -589,6 +592,8 @@ organization through innovative, proactive and hard work approach.</p>
 	$("#myage").html(n-1998);
 	var resume_url = 'https://drive.google.com/file/d/1F0_9JFX3CwSnOjhq_dbezkAYZu0ACh2L/view?usp=sharing';
 	$(".resume_download").attr("href", resume_url)
+  var project_url = 'https://dev-tsb.herokuapp.com/';
+	$(".project_url").attr("href", project_url)
   });
   </script>
 
