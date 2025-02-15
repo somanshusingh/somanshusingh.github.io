@@ -408,14 +408,14 @@
         </div>
 
         <div class="row">
-          <div class="col-lg-4 col-md-6 icon-box" data-aos="fade-up">
-            <div class="icon"><i class="bi bi-upc-scan"></i></div>
-            <h4 class="title"><a class="project_url" href="https://erp-crm.netlify.app/">ERP System</a></h4>
+          <div class="col-lg-6 col-md-6 icon-box" data-aos="fade-up">
+            <div class="icon"><i class="bi bi-clipboard2-data"></i></div>
+            <h4 class="title"><a class="project1_url" href="">ERP System</a></h4>
             <p class="description">A robust ERP system that integrates Machine Learning algorithms to enhance business process automation, predictive analysis, and decision-making, optimizing resource management and workflow efficiency.</p>
           </div>
-          <div class="col-lg-4 col-md-6 icon-box" data-aos="fade-up" data-aos-delay="100">
-            <div class="icon"><i class="bi bi-pin-map"></i></div>
-            <h4 class="title"><a class="project_url" href="https://sarvagyaresource.com/">Manpower Resource Management</a></h4>
+          <div class="col-lg-6 col-md-6 icon-box" data-aos="fade-up" data-aos-delay="100">
+            <div class="icon"><i class="bi bi-person-rolodex"></i></div>
+            <h4 class="title"><a class="project2_url" href="">Manpower Resource Management</a></h4>
             <p class="description">A Manpower Resource Management system that uses data analytics and machine learning models to forecast staffing needs, track employee performance, and optimize resource allocation for maximum productivity.</p>
           </div><!--
           <div class="col-lg-4 col-md-6 icon-box" data-aos="fade-up" data-aos-delay="200">
@@ -638,8 +638,10 @@
 	$("#myage").html(n-1998);
 	var resume_url = 'https://drive.google.com/file/d/1F0_9JFX3CwSnOjhq_dbezkAYZu0ACh2L/view?usp=sharing';
 	$(".resume_download").attr("href", resume_url)
-  var project_url = 'https://dev-tsb.herokuapp.com/';
-	$(".project_url").attr("href", project_url)
+  	var project1_url = 'https://erp-crm.netlify.app/';
+	var project2_url = 'https://sarvagyaresource.com/';
+	$(".project1_url").attr("href", project1_url).attr("target", "_blank");
+	$(".project2_url").attr("href", project2_url).attr("target", "_blank");
   });
   </script>
 
