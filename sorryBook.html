@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>An Apology of Myths</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #111118;
+            background-image: radial-gradient(circle at center, #1f1f2e 0%, #08080c 100%);
+            color: #2c1e16;
+            overflow: hidden;
+            touch-action: none; /* Handled by JS for swiping */
+        }
+
+        /* The Book Container */
+        .book-container {
+            position: relative;
+            width: 90%;
+            height: 85vh;
+            max-width: 500px;
+            background: #f4ebd8;
+            border-radius: 5px 15px 15px 5px;
+            box-shadow: 
+                inset 4px 0 10px rgba(0,0,0,0.1),
+                inset -4px 0 10px rgba(255,255,255,0.5),
+                10px 10px 30px rgba(0,0,0,0.8),
+                0 0 20px rgba(138, 28, 28, 0.1);
+            padding: 30px 20px 70px 40px; 
+            display: flex;
+            flex-direction: column;
+            background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png');
+            transition: box-shadow 1.5s ease;
+        }
+
+        /* The binding */
+        .book-container::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 25px;
+            background: linear-gradient(to right, #5c0f0f 0%, #3e0808 15%, #5c0f0f 30%, #7a1515 50%, #5c0f0f 100%);
+            border-right: 1px solid rgba(0,0,0,0.3);
+            box-shadow: 2px 0 5px rgba(0,0,0,0.4);
+            border-radius: 5px 0 0 5px;
+            z-index: 10;
+        }
+
+        /* Page System */
+        .page-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+            animation: fadeIn 0.5s ease-in-out;
+            position: relative;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(5px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Typography */
+        .chapter-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.6rem;
+            text-align: center;
+            color: #7a1515;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #7a1515;
+            padding-bottom: 10px;
+        }
+
+        .chapter-sub {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .prose-text {
+            font-size: 1.25rem;
+            line-height: 1.6;
+            text-align: justify;
+        }
+
+        .prose-text::first-letter {
+            font-family: 'Cinzel', serif;
+            font-size: 3.5rem;
+            color: #7a1515;
+            float: left;
+            line-height: 0.8;
+            padding-right: 6px;
+            padding-top: 5px;
+        }
+
+        .en-quote {
+            text-align: center;
+            font-size: 1.3rem;
+            font-style: italic;
+            color: #7a1515;
+            line-height: 1.5;
+        }
+
+        .hi-quote {
+            font-family: 'Playfair Display', serif;
+            color: #3b2515;
+            text-align: center;
+            font-size: 1.25rem;
+            line-height: 1.7;
+        }
+
+        .translation {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 15px;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .en-poem {
+            text-align: center;
+            font-size: 1.25rem;
+            line-height: 1.8;
+            font-style: italic;
+        }
+
+        .hi-poem {
+            font-family: 'Playfair Display', serif;
+            text-align: center;
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #3b2515;
+        }
+
+        /* Navigation */
+        .book-nav {
+            position: absolute;
+            bottom: 20px;
+            left: 40px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-btn {
+            font-family: 'Cinzel', serif;
+            background: transparent;
+            border: none;
+            color: #7a1515;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 10px;
+            transition: opacity 0.2s;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: default;
+        }
+
+        .progress-info {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-number {
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            color: #888;
+        }
+        
+        .chapter-indicator {
+            font-size: 0.7rem;
+            color: #aa7777;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Button Page Styles */
+        .decisions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-top: 20px;
+            height: 150px;
+            position: relative;
+            width: 100%;
+        }
+
+        .action-btn {
+            font-family: 'Cinzel', serif;
+            background: transparent;
+            border: 1px solid #7a1515;
+            color: #7a1515;
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            width: 85%;
+            max-width: 250px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .action-btn:active {
+            background: #7a1515;
+            color: #f4ebd8;
+        }
+
+        #rejectBtn {
+            position: absolute;
+            top: 70px;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            z-index: 50;
+        }
+
+        /* Success Effects */
+        .flower-petal {
+            position: fixed;
+            background-color: #ffb6c1;
+            border-radius: 15px 0 15px 0;
+            opacity: 0.7;
+            pointer-events: none;
+            animation: fall linear forwards;
+            z-index: 1000;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(100vh) rotate(360deg); }
+        }
+
+        .swipe-hint {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 0.7rem;
+            color: #999;
+            font-style: italic;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="book-container" id="book">
+        <div class="swipe-hint">Swipe to turn page &#8596;</div>
+        
+        <div id="page-render-area">
+            <!-- Dynamic content injected here -->
+        </div>
+
+        <div class="book-nav" id="bookNav">
+            <button class="nav-btn" id="prevBtn">&#8592;</button>
+            <div class="progress-info">
+                <span class="chapter-indicator" id="chapterIndicator">Chapter 1</span>
+                <span class="page-number" id="pageIndicator">Page 1/42</span>
+            </div>
+            <button class="nav-btn" id="nextBtn">&#8594;</button>
+        </div>
+    </div>
+
+    <script>
+        // The complete 42-page story data (7 chapters * 6 pages)
+        const storyData = [
+            // CHAPTER 1
+            { type: 'title', chap: 1, title: 'Chapter I<br>The Eclipse', sub: 'A confession from the shadows.' },
+            { type: 'prose', chap: 1, content: "Like a king accustomed only to eternal night, I was blinded when you brought spring into my realm. I held onto a delicate thing too tightly, and in my fear of losing the light, I caused it to dim." },
+            { type: 'en-quote', chap: 1, content: "\"I tried to hold the sun in my hands, and only succeeded in casting a shadow upon the one who warmed my soul.\"" },
+            { type: 'hi-quote', chap: 1, content: "मैंने सूरज को अपनी हथेलियों में थामने की कोशिश की, और केवल उसी पर परछाई डाल दी जिसने मेरी आत्मा को गर्माहट दी थी।", trans: "(Maine sooraj ko apni hatheliyon mein thaamne ki koshish ki, aur keval usi par parchhai daal di jisne meri aatma ko garmahat di thi.)" },
+            { type: 'en-poem', chap: 1, content: "A god of shadows, blind and proud,<br>I wrapped your morning in a cloud.<br>Forgive the frost I left behind,<br>For I was terrified and blind." },
+            { type: 'hi-poem', chap: 1, content: "अहंकार में अंधा, मैं परछाइयों का राजा,<br>तुम्हारी सुबह को मैंने बादलों में बांधा।<br>मेरे छोड़े हुए उस पाले को माफ़ कर दो,<br>क्योंकि मैं डरा हुआ और नासमझ था।", trans: "(Ahankaar mein andha, main parchhaiyon ka raja... mere chhode hue us paale ko maaf kar do, kyonki main dara hua aur nasamajh tha.)" },
+
+            // CHAPTER 2
+            { type: 'title', chap: 2, title: 'Chapter II<br>The Silent Realm', sub: 'The reality of your absence.' },
+            { type: 'prose', chap: 2, content: "Without your laughter echoing in these halls, my kingdom is just stone and dust. The underworld is not a place beneath the earth; it is simply reality without you in it." },
+            { type: 'en-quote', chap: 2, content: "\"A throne means absolutely nothing when the queen who made it a home is no longer sitting by my side.\"" },
+            { type: 'hi-quote', chap: 2, content: "वह सिंहासन कुछ भी नहीं, जब वह रानी ही साथ न हो जिसने उसे घर बनाया था।", trans: "(Vah sinhasan kuchh bhi nahi, jab vah rani hi saath na ho jisne use ghar banaya tha.)" },
+            { type: 'en-poem', chap: 2, content: "The jewels I hoard, the crowns I wear,<br>Are worthless dust without you here.<br>The quiet halls just softly weep,<br>While missing you disrupts my sleep." },
+            { type: 'hi-poem', chap: 2, content: "जो गहने मैंने बटोरे, जो ताज मैंने पहने,<br>तुम्हारे बिना वो बस धूल के हैं गहने।<br>ये शांत महल अब चुपचाप रोते हैं,<br>और तुम्हारी याद में हम रात भर जागते हैं।", trans: "(Jo gahne maine batore... tumhare bina wo bas dhool ke hain gahne. Ye shaant mahal ab chupchaap rote hain...)" },
+
+            // CHAPTER 3
+            { type: 'title', chap: 3, title: 'Chapter III<br>The King\'s Folly', sub: 'Owning my mistakes.' },
+            { type: 'prose', chap: 3, content: "I let my insecurities dictate my actions. I was terrified of losing the only truly beautiful thing in my life, and in trying to protect us, I built walls that pushed you away. I was wrong." },
+            { type: 'en-quote', chap: 3, content: "\"Fear is a cruel master. It made me build a fortress so strong, I accidentally locked you out.\"" },
+            { type: 'hi-quote', chap: 3, content: "डर एक क्रूर स्वामी है। इसने मुझे एक ऐसा किला बनाने पर मजबूर किया, कि मैंने गलती से तुम्हें ही बाहर कर दिया।", trans: "(Darr ek kroor swami hai. Isne mujhe ek aisa kila banane par majboor kiya, ki maine galti se tumhe hi bahar kar diya.)" },
+            { type: 'en-poem', chap: 3, content: "I built a wall to keep you safe,<br>But made a prison of this space.<br>I let my demons take the wheel,<br>And broke the trust I meant to seal." },
+            { type: 'hi-poem', chap: 3, content: "तुम्हें सुरक्षित रखने को एक दीवार बनाई,<br>पर अनजाने में वो कैदखाने सी बन गई।<br>अपने डर को मैंने खुद पर हावी होने दिया,<br>और वो भरोसा तोड़ दिया जो मैंने तुम्हें दिया।", trans: "(Tumhe surakshit rakhne ko ek deewar banayi... apne darr ko maine khud par haavi hone diya, aur wo bharosa tod diya...)" },
+
+            // CHAPTER 4
+            { type: 'title', chap: 4, title: 'Chapter IV<br>The Pomegranate Seeds', sub: 'The bond we share.' },
+            { type: 'prose', chap: 4, content: "But we are bound by something deeper than my mistakes. Countless seeds, infinite memories. I refuse to let my moment of darkness erase the beautiful myth we have written together." },
+            { type: 'en-quote', chap: 4, content: "\"Even when the earth freezes over, the roots remember the spring. My soul remembers yours.\"" },
+            { type: 'hi-quote', chap: 4, content: "भले ही धरती पर बर्फ जम जाए, जड़ें हमेशा वसंत को याद रखती हैं। मेरी आत्मा तुम्हारी आत्मा को याद रखती है।", trans: "(Bhale hi dharti par barf jam jaye, jadein hamesha vasant ko yaad rakhti hain. Meri aatma tumhari aatma ko yaad rakhti hai.)" },
+            { type: 'en-poem', chap: 4, content: "Those tiny seeds, a promise made,<br>A love like ours can never fade.<br>Through bitter frost and darkened sky,<br>Our deeply rooted love won't die." },
+            { type: 'hi-poem', chap: 4, content: "अनार के वो बीज, वो किया हुआ वादा,<br>हमारा प्यार नहीं होगा कभी भी आधा।<br>चाहे गिरे पाला या आसमान हो जाए काला,<br>हमारी जड़ों ने इस रिश्ते को है संभाला।", trans: "(Anaar ke wo beej, wo kiya hua wada... chahe gire paala ya aasman ho jaye kaala, hamari jadon ne is rishte ko hai sambhala.)" },
+
+            // CHAPTER 5
+            { type: 'title', chap: 5, title: 'Chapter V<br>The Endless Winter', sub: 'The pain of waiting.' },
+            { type: 'prose', chap: 5, content: "The air is cold now. The flowers you planted have bowed their heads in sorrow. They are waiting for their goddess to return, and so am I. I am so deeply sorry, my love." },
+            { type: 'en-quote', chap: 5, content: "\"I would gladly trade my immortality for just one second of your true forgiveness.\"" },
+            { type: 'hi-quote', chap: 5, content: "तुम्हारी सच्ची माफ़ी के एक पल के लिए, मैं अपनी अमरता भी खुशी-खुशी दांव पर लगा दूंगा।", trans: "(Tumhari sachhi maafi ke ek pal ke liye, main apni amarta bhi khushi-khushi daanv par laga dunga.)" },
+            { type: 'en-poem', chap: 5, content: "The rivers freeze, the skies turn grey,<br>Since I foolishly drove you away.<br>I walk these halls a hollow shell,<br>Without your love, this place is hell." },
+            { type: 'hi-poem', chap: 5, content: "नदियां जम गईं, आसमान भूरा हो गया,<br>जब से मेरी गलती ने तुम्हें मुझसे दूर किया।<br>तुम्हारे बिना मैं बस एक खाली शरीर हूँ,<br>तुम्हारे प्यार के बिना, ये जगह नर्क के समान है।", trans: "(Nadiyan jam gayi, aasman bhoora ho gaya... tumhare pyaar ke bina, ye jagah nark ke samaan hai.)" },
+
+            // CHAPTER 6
+            { type: 'title', chap: 6, title: 'Chapter VI<br>The Spring\'s Return', sub: 'A promise to be better.' },
+            { type: 'prose', chap: 6, content: "I am learning to be gentle. I am learning to let your light exist wildly, without ever trying to capture it or control it. Please, let me show you the king I can be for you." },
+            { type: 'en-quote', chap: 6, content: "\"I do not ask to own your spring; I only beg for the privilege to sit beside you in your garden.\"" },
+            { type: 'hi-quote', chap: 6, content: "मैं तुम्हारे वसंत पर कब्ज़ा नहीं करना चाहता; मैं बस तुम्हारे बगीचे में तुम्हारे साथ बैठने का सौभाग्य मांगता हूँ।", trans: "(Main tumhare vasant par kabza nahi karna chahta; main bas tumhare bageeche mein tumhare saath baithne ka saubhagya maangta hoon.)" },
+            { type: 'en-poem', chap: 6, content: "I'll clear the frost, I'll tend the soil,<br>I'll make amends with humble toil.<br>I'll be the dark that makes you shine,<br>If you'll forgive this heart of mine." },
+            { type: 'hi-poem', chap: 6, content: "मैं पाला हटाऊंगा, मैं मिट्टी संवारूंगा,<br>मैं हर मुमकिन कोशिश से अपनी गलती सुधारूंगा।<br>मैं वो अंधेरा बनूंगा जिसमें तुम चमक सको,<br>बस एक बार मेरे इस दिल को तुम माफ़ कर दो।", trans: "(Main paala hataunga, main mitti sanwarunga... main wo andhera banunga jisme tum chamak sako, bas ek baar mere is dil ko tum maaf kar do.)" },
+
+            // CHAPTER 7
+            { type: 'title', chap: 7, title: 'Chapter VII<br>The Choice', sub: 'The pen is in your hand.' },
+            { type: 'prose', chap: 7, content: "The myth is in your hands now. You hold the pen, you hold the light, and most importantly, you hold my entirely shattered heart." },
+            { type: 'en-quote', chap: 7, content: "\"Will you return to my shadows and make them a paradise once more?\"" },
+            { type: 'hi-quote', chap: 7, content: "क्या तुम मेरी परछाइयों में लौटकर उन्हें फिर से स्वर्ग बनाओगी?", trans: "(Kya tum meri parchhaiyon mein lautkar unhein phir se swarg banaogi?)" },
+            { type: 'buttons', chap: 7 }, // Page 41 (The choice buttons)
+            { type: 'success', chap: 7 }  // Page 42 (Hidden until accepted)
+        ];
+
+        let currentPageIndex = 0;
+        const renderArea = document.getElementById('page-render-area');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const pageIndicator = document.getElementById('pageIndicator');
+        const chapterIndicator = document.getElementById('chapterIndicator');
+        const bookNav = document.getElementById('bookNav');
+
+        function renderPage(index) {
+            const data = storyData[index];
+            let html = '';
+
+            if (data.type === 'title') {
+                html = `<div class="page-content" style="align-items: center; text-align: center;">
+                            <div class="chapter-title" style="border: none; font-size: 2rem;">${data.title}</div>
+                            <div class="chapter-sub">${data.sub}</div>
+                        </div>`;
+            } else if (data.type === 'prose') {
+                html = `<div class="page-content"><div class="prose-text">${data.content}</div></div>`;
+            } else if (data.type === 'en-quote') {
+                html = `<div class="page-content"><div class="en-quote">${data.content}</div></div>`;
+            } else if (data.type === 'hi-quote') {
+                html = `<div class="page-content">
+                            <div class="hi-quote">${data.content}</div>
+                            <div class="translation">${data.trans}</div>
+                        </div>`;
+            } else if (data.type === 'en-poem') {
+                html = `<div class="page-content"><div class="en-poem">${data.content}</div></div>`;
+            } else if (data.type === 'hi-poem') {
+                html = `<div class="page-content">
+                            <div class="hi-poem">${data.content}</div>
+                            <div class="translation" style="margin-top: 25px;">${data.trans}</div>
+                        </div>`;
+            } else if (data.type === 'buttons') {
+                html = `<div class="page-content">
+                            <div class="en-quote" style="font-size: 1.1rem; margin-bottom: 30px;">Will you let the spring return?</div>
+                            <div class="decisions" id="decision-box">
+                                <button class="action-btn" id="acceptBtn">Forgive Me (Turn Page)</button>
+                                <button class="action-btn" id="rejectBtn">Not Ready (Close Book)</button>
+                            </div>
+                        </div>`;
+            } else if (data.type === 'success') {
+                html = `<div class="page-content" style="text-align: center;">
+                            <div class="chapter-title" style="color: #d14972; border-color: #d14972;">Chapter VIII<br>The Blooming</div>
+                            <div class="en-quote" style="color: #d14972; margin-top: 20px;">You brought life back. I promise to nurture your gardens forever.</div>
+                            <div class="hi-quote" style="color: #d14972; margin-top: 40px;">"मेरी दुनिया में फिर से रंग भरने के लिए शुक्रिया।"</div>
+                            <div class="translation">(Thank you for bringing color back to my world.)</div>
+                        </div>`;
+            }
+
+            // Trigger reflow for animation
+            renderArea.innerHTML = '';
+            setTimeout(() => { renderArea.innerHTML = html; initPageScripts(data.type); }, 10);
+            
+            // Update UI
+            pageIndicator.innerText = `Page ${index + 1}/42`;
+            chapterIndicator.innerText = `Chapter ${data.chap}`;
+            
+            prevBtn.disabled = (index === 0);
+            
+            // Handle Next Button state
+            if (data.type === 'buttons' || data.type === 'success') {
+                nextBtn.style.visibility = 'hidden';
+            } else {
+                nextBtn.style.visibility = 'visible';
+            }
+        }
+
+        function initPageScripts(type) {
+            if (type === 'buttons') {
+                const rejectBtn = document.getElementById('rejectBtn');
+                const decisionBox = document.getElementById('decision-box');
+                const acceptBtn = document.getElementById('acceptBtn');
+
+                const moveBtn = (e) => {
+                    if (e) e.preventDefault();
+                    const boxRect = decisionBox.getBoundingClientRect();
+                    const btnRect = rejectBtn.getBoundingClientRect();
+                    const maxX = boxRect.width - btnRect.width;
+                    const maxY = boxRect.height - btnRect.height;
+                    const randomX = Math.max(0, Math.floor(Math.random() * maxX));
+                    const randomY = Math.max(0, Math.floor(Math.random() * maxY));
+                    rejectBtn.style.left = `${randomX}px`;
+                    rejectBtn.style.top = `${randomY}px`;
+                    setTimeout(() => { rejectBtn.innerText = "Are you sure? 🥀"; }, 200);
+                };
+
+                rejectBtn.addEventListener('touchstart', moveBtn, {passive: false});
+                rejectBtn.addEventListener('mouseover', moveBtn);
+
+                acceptBtn.addEventListener('click', () => {
+                    currentPageIndex++; // Move to success page
+                    renderPage(currentPageIndex);
+                    bookNav.style.display = 'none';
+                    document.getElementById('book').style.boxShadow = "inset 4px 0 10px rgba(0,0,0,0.1), inset -4px 0 10px rgba(255,255,255,0.5), 10px 10px 30px rgba(0,0,0,0.8), 0 0 40px rgba(255, 182, 193, 0.4)";
+                    
+                    // Petal rain
+                    const createPetal = () => {
+                        const petal = document.createElement('div');
+                        petal.classList.add('flower-petal');
+                        const size = Math.random() * 12 + 8;
+                        petal.style.width = `${size}px`; petal.style.height = `${size}px`;
+                        petal.style.left = `${Math.random() * 100}vw`; petal.style.top = `-20px`;
+                        const colors = ['#ffb6c1', '#ffc0cb', '#f08080', '#e75480'];
+                        petal.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                        const duration = Math.random() * 3 + 3;
+                        petal.style.animationDuration = `${duration}s`;
+                        document.body.appendChild(petal);
+                        setTimeout(() => petal.remove(), duration * 1000);
+                    };
+                    setInterval(createPetal, 200);
+                    for(let i=0; i<15; i++) setTimeout(createPetal, i*100);
+                });
+            }
+        }
+
+        // Navigation Clicks
+        prevBtn.addEventListener('click', () => {
+            if (currentPageIndex > 0) {
+                currentPageIndex--;
+                renderPage(currentPageIndex);
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            // Prevent skipping past the choice page
+            if (currentPageIndex < storyData.length - 1 && storyData[currentPageIndex].type !== 'buttons') {
+                currentPageIndex++;
+                renderPage(currentPageIndex);
+            }
+        });
+
+        // Swipe Functionality for Mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        document.getElementById('book').addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, {passive: true});
+
+        document.getElementById('book').addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, {passive: true});
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            if (touchEndX < touchStartX - swipeThreshold) {
+                // Swipe Left -> Next Page
+                if (currentPageIndex < storyData.length - 1 && storyData[currentPageIndex].type !== 'buttons') {
+                    currentPageIndex++;
+                    renderPage(currentPageIndex);
+                }
+            }
+            if (touchEndX > touchStartX + swipeThreshold) {
+                // Swipe Right -> Prev Page
+                if (currentPageIndex > 0) {
+                    currentPageIndex--;
+                    renderPage(currentPageIndex);
+                }
+            }
+        }
+
+        // Initialize First Page
+        renderPage(0);
+    </script>
+</body>
+</html>
